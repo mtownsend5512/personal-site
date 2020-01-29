@@ -50,10 +50,10 @@
 		      @enderror
 		    </div>
 		  </div>
-		  <div class="md:flex md:items-center">
-		  	{!! NoCaptcha::display(['data-theme' => 'dark']) !!}
+		  <div class="mb-6">
+		  	{!! NoCaptcha::display() !!}
   		      @error('g-recaptcha-response')
-		      <p class="text-red-500 font-semibold -mt-3 text-sm italic">{{ $message }}</p>
+		      <p class="text-red-500 font-semibold text-sm italic">{{ $message }}</p>
 		      @enderror
 		  </div>
 		  <div class="md:flex md:items-center">
@@ -67,3 +67,7 @@
 		</form>
 	</div>
 @endsection
+
+@section('js')
+ {!! NoCaptcha::renderJs() !!}
+ @endsection

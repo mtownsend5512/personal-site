@@ -324,12 +324,13 @@
 	"buffers":
 	[
 		{
-			"file": "app/Http/Controllers/ArticleController.php",
+			"file": ".env",
 			"settings":
 			{
-				"buffer_size": 576,
+				"buffer_size": 1145,
 				"encoding": "UTF-8",
-				"line_ending": "Unix"
+				"line_ending": "Unix",
+				"name": ".env"
 			}
 		},
 		{
@@ -337,25 +338,33 @@
 			"settings":
 			{
 				"buffer_size": 797,
-				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "resources/views/contact.blade.php",
+			"file": "app/Http/Controllers/ArticleController.php",
 			"settings":
 			{
-				"buffer_size": 3017,
-				"encoding": "UTF-8",
+				"buffer_size": 576,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "resources/views/emails/contact-form.blade",
+			"file": "config/app.php",
 			"settings":
 			{
-				"buffer_size": 113,
-				"encoding": "UTF-8",
+				"buffer_size": 9303,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<?php\n\nnamespace Anhskohbo\\NoCaptcha;\n\nuse Symfony\\Component\\HttpFoundation\\Request;\nuse GuzzleHttp\\Client;\n\nclass NoCaptcha\n{\n    const CLIENT_API = 'https://www.google.com/recaptcha/api.js';\n    const VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify';\n\n    /**\n     * The recaptcha secret key.\n     *\n     * @var string\n     */\n    protected $secret;\n\n    /**\n     * The recaptcha sitekey key.\n     *\n     * @var string\n     */\n    protected $sitekey;\n\n    /**\n     * @var \\GuzzleHttp\\Client\n     */\n    protected $http;\n\n    /**\n     * The cached verified responses.\n     *\n     * @var array\n     */\n    protected $verifiedResponses = [];\n\n    /**\n     * NoCaptcha.\n     *\n     * @param string $secret\n     * @param string $sitekey\n     * @param array $options\n     */\n    public function __construct($secret, $sitekey, $options = [])\n    {\n        $this->secret = $secret;\n        $this->sitekey = $sitekey;\n        $this->http = new Client($options);\n    }\n\n    /**\n     * Render HTML captcha.\n     *\n     * @param array $attributes\n     *\n     * @return string\n     */\n    public function display($attributes = [])\n    {\n        $attributes = $this->prepareAttributes($attributes);\n        return '<div' . $this->buildAttributes($attributes) . '></div>';\n    }\n\n    /**\n     * @see display()\n     */\n    public function displayWidget($attributes = [])\n    {\n        return $this->display($attributes);\n    }\n\n    /**\n     * Display a Invisible reCAPTCHA by embedding a callback into a form submit button.\n     *\n     * @param string $formIdentifier the html ID of the form that should be submitted.\n     * @param string $text the text inside the form button\n     * @param array $attributes array of additional html elements\n     *\n     * @return string\n     */\n    public function displaySubmit($formIdentifier, $text = 'submit', $attributes = [])\n    {\n        $javascript = '';\n        if (!isset($attributes['data-callback'])) {\n            $functionName = 'onSubmit' . str_replace(['-', '=', '\\'', '\"', '<', '>', '`'], '', $formIdentifier);\n            $attributes['data-callback'] = $functionName;\n            $javascript = sprintf(\n                '<script>function %s(){document.getElementById(\"%s\").submit();}</script>',\n                $functionName,\n                $formIdentifier\n            );\n        }\n\n        $attributes = $this->prepareAttributes($attributes);\n\n        $button = sprintf('<button%s><span>%s</span></button>', $this->buildAttributes($attributes), $text);\n\n        return $button . $javascript;\n    }\n\n    /**\n     * Render js source\n     *\n     * @param null $lang\n     * @param bool $callback\n     * @param string $onLoadClass\n     * @return string\n     */\n    public function renderJs($lang = null, $callback = false, $onLoadClass = 'onloadCallBack')\n    {\n        return '<script src=\"'.$this->getJsLink($lang, $callback, $onLoadClass).'\" async defer></script>'.\"\\n\";\n    }\n\n    /**\n     * Verify no-captcha response.\n     *\n     * @param string $response\n     * @param string $clientIp\n     *\n     * @return bool\n     */\n    public function verifyResponse($response, $clientIp = null)\n    {\n        if (empty($response)) {\n            return false;\n        }\n\n        // Return true if response already verfied before.\n        if (in_array($response, $this->verifiedResponses)) {\n            return true;\n        }\n\n        $verifyResponse = $this->sendRequestVerify([\n            'secret' => $this->secret,\n            'response' => $response,\n            'remoteip' => $clientIp,\n        ]);\n\n        if (isset($verifyResponse['success']) && $verifyResponse['success'] === true) {\n            // A response can only be verified once from google, so we need to\n            // cache it to make it work in case we want to verify it multiple times.\n            $this->verifiedResponses[] = $response;\n            return true;\n        } else {\n            return false;\n        }\n    }\n\n    /**\n     * Verify no-captcha response by Symfony Request.\n     *\n     * @param Request $request\n     *\n     * @return bool\n     */\n    public function verifyRequest(Request $request)\n    {\n        return $this->verifyResponse(\n            $request->get('g-recaptcha-response'),\n            $request->getClientIp()\n        );\n    }\n\n    /**\n     * Get recaptcha js link.\n     *\n     * @param string $lang\n     * @param boolean $callback\n     * @param string $onLoadClass\n     * @return string\n     */\n    public function getJsLink($lang = null, $callback = false, $onLoadClass = 'onloadCallBack')\n    {\n        $client_api = static::CLIENT_API;\n        $params = [];\n\n        $callback ? $this->setCallBackParams($params, $onLoadClass)  : false;\n        $lang ? $params['hl'] = $lang : null;\n\n        return $client_api . '?'. http_build_query($params);\n    }\n\n    /**\n     * @param $params\n     * @param $onLoadClass\n     */\n    protected function setCallBackParams(&$params, $onLoadClass)\n    {\n        $params['render'] = 'explicit';\n        $params['onload'] = $onLoadClass;\n    }\n\n    /**\n     * Send verify request.\n     *\n     * @param array $query\n     *\n     * @return array\n     */\n    protected function sendRequestVerify(array $query = [])\n    {\n        $response = $this->http->request('POST', static::VERIFY_URL, [\n            'form_params' => $query,\n        ]);\n\n        return json_decode($response->getBody(), true);\n    }\n\n    /**\n     * Prepare HTML attributes and assure that the correct classes and attributes for captcha are inserted.\n     *\n     * @param array $attributes\n     *\n     * @return array\n     */\n    protected function prepareAttributes(array $attributes)\n    {\n        $attributes['data-sitekey'] = $this->sitekey;\n        if (!isset($attributes['class'])) {\n            $attributes['class'] = '';\n        }\n        $attributes['class'] = trim('g-recaptcha ' . $attributes['class']);\n\n        return $attributes;\n    }\n\n    /**\n     * Build HTML attributes.\n     *\n     * @param array $attributes\n     *\n     * @return string\n     */\n    protected function buildAttributes(array $attributes)\n    {\n        $html = [];\n\n        foreach ($attributes as $key => $value) {\n            $html[] = $key.'=\"'.$value.'\"';\n        }\n\n        return count($html) ? ' '.implode(' ', $html) : '';\n    }\n}\n",
+			"file": "vendor/anhskohbo/no-captcha/src/NoCaptcha.php",
+			"file_size": 6274,
+			"file_write_time": 132145585510000000,
+			"settings":
+			{
+				"buffer_size": 6274,
 				"line_ending": "Unix"
 			}
 		}
@@ -468,36 +477,30 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/marktownsend/web/sites/mark",
-		"/Users/marktownsend/web/sites/mark/app",
-		"/Users/marktownsend/web/sites/mark/app/Helpers",
-		"/Users/marktownsend/web/sites/mark/app/Http",
-		"/Users/marktownsend/web/sites/mark/app/Http/Controllers",
-		"/Users/marktownsend/web/sites/mark/resources",
-		"/Users/marktownsend/web/sites/mark/resources/css",
-		"/Users/marktownsend/web/sites/mark/resources/views",
-		"/Users/marktownsend/web/sites/mark/resources/views/emails"
+		"/Users/marktownsend/web/sites/mark"
 	],
 	"file_history":
 	[
 		"/Users/marktownsend/web/sites/mark/app/Mail/ContactFormEmail.php",
-		"/Users/marktownsend/web/sites/mark/app/Http/Requests/ContactRequest.php",
-		"/Users/marktownsend/web/sites/mark/.env",
+		"/Users/marktownsend/web/sites/mark/resources/views/portfolio.blade.php",
+		"/Users/marktownsend/web/sites/mark/resources/views/layouts/partials/nav.blade.php",
+		"/Users/marktownsend/web/sites/mark/routes/web.php",
 		"/Users/marktownsend/web/sites/mark/resources/views/emails/contact-form.blade",
+		"/Users/marktownsend/web/sites/mark/config/app.php",
+		"/Users/marktownsend/web/sites/mark/app/Http/Controllers/ArticleController.php",
+		"/Users/marktownsend/web/sites/mark/app/Http/Controllers/ContactController.php",
+		"/Users/marktownsend/web/sites/mark/app/Http/Requests/ContactRequest.php",
+		"/Users/marktownsend/web/sites/mark/resources/views/contact.blade.php",
+		"/Users/marktownsend/web/sites/mark/.env",
 		"/Users/marktownsend/web/sites/mark/config/captcha.php",
 		"/Users/marktownsend/web/sites/mark/config/constants.php",
 		"/Users/marktownsend/web/sites/mark/config/services.php",
 		"/Users/marktownsend/web/sites/mark/resources/views/articles.blade.php",
-		"/Users/marktownsend/web/sites/mark/app/Http/Controllers/ContactController.php",
 		"/Users/marktownsend/web/sites/mark/resources/css/app.css",
 		"/Users/marktownsend/web/sites/mark/resources/views/layouts/default.blade.php",
-		"/Users/marktownsend/web/sites/mark/resources/views/layouts/partials/nav.blade.php",
 		"/Users/marktownsend/web/sites/mark/resources/views/talks.blade.php",
-		"/Users/marktownsend/web/sites/mark/resources/views/contact.blade.php",
 		"/Users/marktownsend/web/sites/mark/resources/views/home.blade.php",
-		"/Users/marktownsend/web/sites/mark/routes/web.php",
 		"/Users/marktownsend/web/sites/mark/resources/views/layouts/contact.blade.php",
-		"/Users/marktownsend/web/sites/mark/app/Http/Controllers/ArticleController.php",
 		"/Users/marktownsend/web/sites/mark/app/Support/DataWrapper.php",
 		"/Users/marktownsend/web/sites/mark/app/Helpers/data_wrapper.php",
 		"/Users/marktownsend/web/sites/mark/node_modules/clean-css/lib/optimizer/level-2/restore.js",
@@ -605,9 +608,7 @@
 		"/Users/marktownsend/web/sites/dieselcore/storage/logs/laravel-2019-10-28.log",
 		"/Users/marktownsend/web/sites/dieselcore/resources/views/dashboard/imports-create.blade.php",
 		"/Users/marktownsend/web/sites/dieselcore/vendor/shvetsgroup/laravel-email-database-log/src/ShvetsGroup/LaravelEmailDatabaseLog/LaravelEmailDatabaseLogServiceProvider.php",
-		"/Users/marktownsend/web/sites/dieselcore/resources/views/emails/import.blade.php",
-		"/Users/marktownsend/web/sites/dieselcore/resources/views/dashboard/partials/purchase-order-inventory.blade.php",
-		"/Users/marktownsend/web/sites/dieselcore/storage/logs/laravel-2019-10-21.log"
+		"/Users/marktownsend/web/sites/dieselcore/resources/views/emails/import.blade.php"
 	],
 	"find":
 	{
@@ -648,43 +649,38 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "app/Http/Controllers/ArticleController.php",
+					"file": ".env",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 576,
+						"buffer_size": 1145,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								576,
-								576
+								979,
+								979
 							]
 						],
 						"settings":
 						{
-							"SL.306.region_keys":
-							[
-							],
-							"SL.323.region_keys":
-							[
-							],
 							"WordCount":
 							{
-								"changes": -1,
-								"modified": true,
-								"selection": true,
+								"changes": 121,
+								"count": 17,
+								"modified": false,
+								"selection": false,
 								"status": -1,
-								"syntax": "php"
+								"syntax": "plain text"
 							},
-							"auto_complete": false,
+							"auto_name": ".env",
 							"bracket_highlighter.busy": false,
 							"bracket_highlighter.clone": -1,
 							"bracket_highlighter.clone_locations":
@@ -833,15 +829,13 @@
 								"bh_tag_close",
 								"bh_tag_content"
 							],
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 79.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -863,25 +857,8 @@
 						],
 						"settings":
 						{
-							"SL.329.region_keys":
+							"SL.498.region_keys":
 							[
-								"sublime_linter.protected_regions"
-							],
-							"SL.335.region_keys":
-							[
-							],
-							"SL.345.region_keys":
-							[
-							],
-							"SL.352.region_keys":
-							[
-							],
-							"SL.375.region_keys":
-							[
-							],
-							"SL.400.region_keys":
-							[
-								"sublime_linter.protected_regions"
 							],
 							"WordCount":
 							{
@@ -891,97 +868,8 @@
 								"status": -1,
 								"syntax": "php"
 							},
-							"auto_complete": false,
 							"bracket_highlighter.busy": false,
 							"bracket_highlighter.clone": -1,
-							"bracket_highlighter.clone_locations":
-							{
-								"close":
-								{
-									"1":
-									[
-										500,
-										501
-									]
-								},
-								"icon":
-								{
-									"1":
-									[
-										"Packages/BracketHighlighter/icons/single_quote.png",
-										"region.greenish"
-									]
-								},
-								"open":
-								{
-									"1":
-									[
-										477,
-										478
-									]
-								},
-								"unmatched":
-								{
-								}
-							},
-							"bracket_highlighter.clone_regions":
-							[
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content"
-							],
 							"bracket_highlighter.locations":
 							{
 								"close":
@@ -1078,58 +966,56 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "resources/views/contact.blade.php",
+					"file": "app/Http/Controllers/ArticleController.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3017,
+						"buffer_size": 576,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2590,
-								2590
+								354,
+								340
 							]
 						],
 						"settings":
 						{
-							"SL.404.region_keys":
+							"SL.501.region_keys":
 							[
 							],
 							"WordCount":
 							{
-								"changes": 39,
-								"count": 249,
-								"modified": false,
-								"selection": false,
+								"changes": -1,
+								"modified": true,
+								"selection": true,
 								"status": -1,
-								"syntax": "plain text"
+								"syntax": "php"
 							},
-							"auto_complete": false,
 							"bracket_highlighter.busy": false,
-							"bracket_highlighter.clone": 404,
-							"bracket_highlighter.clone_locations":
+							"bracket_highlighter.clone": -1,
+							"bracket_highlighter.locations":
 							{
 								"close":
 								{
 									"1":
 									[
-										2605,
-										2606
+										354,
+										355
 									]
 								},
 								"icon":
 								{
 									"1":
 									[
-										"Packages/BracketHighlighter/icons/double_quote.png",
+										"Packages/BracketHighlighter/icons/single_quote.png",
 										"region.greenish"
 									]
 								},
@@ -1137,82 +1023,9 @@
 								{
 									"1":
 									[
-										2557,
-										2558
+										339,
+										340
 									]
-								},
-								"unmatched":
-								{
-								}
-							},
-							"bracket_highlighter.clone_regions":
-							[
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content"
-							],
-							"bracket_highlighter.locations":
-							{
-								"close":
-								{
-								},
-								"icon":
-								{
-								},
-								"open":
-								{
 								},
 								"unmatched":
 								{
@@ -1276,46 +1089,46 @@
 								"bh_tag_close",
 								"bh_tag_content"
 							],
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 571.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "resources/views/emails/contact-form.blade",
+					"file": "config/app.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 113,
+						"buffer_size": 9303,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								113,
-								113
+								6321,
+								6321
 							]
 						],
 						"settings":
 						{
-							"SL.408.region_keys":
+							"SL.478.region_keys":
 							[
 							],
 							"WordCount":
 							{
-								"changes": 28,
-								"count": 9,
-								"modified": false,
-								"selection": false,
+								"changes": -1,
+								"modified": true,
+								"selection": true,
 								"status": -1,
-								"syntax": "plain text"
+								"syntax": "php"
 							},
 							"auto_complete": false,
 							"bracket_highlighter.busy": false,
@@ -1324,12 +1137,27 @@
 							{
 								"close":
 								{
+									"1":
+									[
+										6660,
+										6661
+									]
 								},
 								"icon":
 								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/square_bracket.png",
+										"region.bluish"
+									]
 								},
 								"open":
 								{
+									"1":
+									[
+										4791,
+										4792
+									]
 								},
 								"unmatched":
 								{
@@ -1393,6 +1221,137 @@
 								"bh_tag_close",
 								"bh_tag_content"
 							],
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										6660,
+										6661
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/square_bracket.png",
+										"region.bluish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										4791,
+										4792
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content"
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "vendor/anhskohbo/no-captcha/src/NoCaptcha.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6274,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"SL.474.region_keys":
+							[
+							],
+							"WordCount":
+							{
+								"changes": -1,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "php"
+							},
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.clone": -1,
 							"bracket_highlighter.locations":
 							{
 								"close":
@@ -1466,13 +1425,15 @@
 								"bh_tag_close",
 								"bh_tag_content"
 							],
-							"syntax": "Packages/Laravel Blade Highlighter/blade.sublime-syntax"
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -1535,8 +1496,32 @@
 		"selected_items":
 		[
 			[
+				"ArticleCon",
+				"app/Http/Controllers/ArticleController.php"
+			],
+			[
 				"ContactFormEmail",
 				"app/Mail/ContactFormEmail.php"
+			],
+			[
+				"ContactCon",
+				"app/Http/Controllers/ContactController.php"
+			],
+			[
+				"config/app",
+				"config/app.php"
+			],
+			[
+				"Anhskohbo\\NoCaptcha\\NoCaptch",
+				"vendor/anhskohbo/no-captcha/src/NoCaptcha.php"
+			],
+			[
+				"nav.ba",
+				"resources/views/layouts/partials/nav.blade.php"
+			],
+			[
+				"web",
+				"routes/web.php"
 			],
 			[
 				"ContactRequest",
@@ -1575,16 +1560,8 @@
 				"config/constants.php"
 			],
 			[
-				"web",
-				"routes/web.php"
-			],
-			[
 				"nav",
 				"resources/views/layouts/partials/nav.blade.php"
-			],
-			[
-				"ContactCon",
-				"app/Http/Controllers/ContactController.php"
 			],
 			[
 				"datawrapper",
@@ -1939,10 +1916,6 @@
 				"app/Http/Controllers/ImportController.php"
 			],
 			[
-				"config/app",
-				"config/app.php"
-			],
-			[
 				"CoreCOn",
 				"app/Http/Controllers/CoreController.php"
 			],
@@ -2033,18 +2006,6 @@
 			[
 				"FilesystemServiceProvider",
 				"vendor/laravel/framework/src/Illuminate/Filesystem/FilesystemServiceProvider.php"
-			],
-			[
-				"ImportRequ",
-				"app/Http/Requests/ImportRequest.php"
-			],
-			[
-				"authorized",
-				"config/authorized_api_apps.php"
-			],
-			[
-				"Illuminate\\Support\\Collection",
-				"vendor/laravel/framework/src/Illuminate/Support/Collection.php"
 			]
 		],
 		"width": 0.0
