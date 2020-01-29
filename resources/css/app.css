@@ -1,0 +1,60 @@
+@tailwind base;
+
+@tailwind components;
+
+/* Custom css config goes here */
+/*
+
+/*.link {
+	@apply text-green-600
+}*/
+
+* {
+	font-family: 'Assistant', 'Helvetica', sans-serif;
+}
+
+nav.desktop-nav > a {
+	@apply pb-1 border-solid border-b-2 text-gray-700
+}
+
+nav.desktop-nav > a.active {
+	@apply border-indigo-700 text-indigo-700
+}
+
+nav.desktop-nav > a.active:hover {
+	@apply border-transparent text-gray-700
+}
+
+nav.desktop-nav > a:hover:not(.active) {
+	@apply border-indigo-700 text-indigo-700
+}
+
+nav.desktop-nav > a:not(.active) {
+	@apply border-transparent
+}
+
+nav.desktop-nav > a:not(:first-child) {
+	@apply ml-6
+}
+
+p {
+	@apply mb-6
+}
+
+a {
+	@apply cursor-pointer
+}
+
+p a {
+	@apply text-indigo-900 border-b-2 pb-px border-indigo-600 px-px
+}
+
+p a:hover {
+	@apply border-transparent
+}
+
+mark {
+	@apply bg-yellow-300 px-1 rounded font-semibold
+}
+
+@tailwind utilities;
