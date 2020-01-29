@@ -4,7 +4,7 @@
 
 @if (session()->has('message'))
 {{-- Alert message --}}
-<div class="flex flex-col lg:flex-row md:flex-row items-center justify-center w-full px-8 py-5 bg-orange-500 mb-8 text-white text-xl text-center font-medium shadow-lg">
+<div class="px-8 py-1 bg-indigo-500 mb-8 text-white rounded-full text-xl font-semibold shadow-lg">
 	{!! session()->get('message') !!}
 </div>
 {{-- End alert message --}}

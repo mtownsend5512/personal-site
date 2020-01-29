@@ -4,5 +4,4 @@
 {{ $senderName }} said:
 
 {{ $body }}
-
 @endcomponent

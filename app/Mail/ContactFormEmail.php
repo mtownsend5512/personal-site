@@ -11,6 +11,7 @@ class ContactFormEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $senderName;
     public $body;
 
     /**
@@ -33,8 +34,8 @@ class ContactFormEmail extends Mailable
     public function build()
     {
         $this->subject('New personal site inquiry')
-        ->from(env('PERSONAL_EMAIL_ADDRESS'))
-        ->replyTo($this->replyEmail);
+            ->from(env('PERSONAL_EMAIL_ADDRESS'))
+            ->replyTo($this->replyEmail);
 
         return $this->markdown('emails.contact-form');
     }
