@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Zttp\Zttp;
 
-class ArticleController extends Controller
+class WritingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +18,10 @@ class ArticleController extends Controller
             'api-key' => env('DEV_TO_API_KEY')
         ])->get('https://dev.to/api/articles/me/all');
 
-        abort_unless($response->isOk(), 404);
+        abort_unless($response->isOk(), 500);
 
         $articles = data_wrapper($response->json());
 
-        return view('articles', compact('articles'));
+        return view('writing', compact('articles'));
     }
 }

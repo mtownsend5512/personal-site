@@ -1,4 +1,4 @@
-@extends('layouts.default')
+@extends('layouts.default', ['title' => 'Writing on web design and development - Mark Townsend'])
 
 @section('content')
 <div class="lg:w-3/5 md:w-5/6">

@@ -24,6 +24,6 @@ class ContactController extends Controller
 
         Mail::to(env('PERSONAL_EMAIL_ADDRESS'))->send(new ContactFormEmail($data));
 
-        return redirect()->back()->with('message', '<i class="fas fa-paper-plane text-3xl lg:text-lg md:text-lg mb-4 lg:mb-0 mr-4"></i> Thank you! Your message has been received. I\'ll be in touch.');
+        return redirect()->back()->with('message', '<i class="fas fa-paper-plane text-3xl lg:text-lg md:text-lg mb-4 lg:mb-0 mr-4"></i> Thank you! Your message has been sent. I\'ll be in touch.');
     }
 }

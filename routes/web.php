@@ -19,11 +19,14 @@ Route::get('/portfolio', function () {
 	return view('portfolio');
 });
 
+Route::get('/open-source', 'OpenSourceController');
+
+
 Route::get('/talks', function () {
 	return view('talks');
 });
 
-Route::get('writing', 'ArticleController@index');
+Route::get('/writing', 'WritingController@index');
 
 Route::get('/contact', 'ContactController@show');
 Route::post('/contact', 'ContactController@send');
