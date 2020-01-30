@@ -10,10 +10,11 @@
 	<div class="flex flex-wrap mb-8">
 		<div class="lg:w-4/5">
 			<a target="_blank" href="{{ $package['repository'] }}" class="font-bold">{{ str_replace('mtownsend/', '', $package['name']) }}</a>
+			{{-- <span class="rounded-full bg-gray-300 text-xs leading-none px-3 py-1 font-semibold shadow ml-3 inline-block align-middle border border-gray-400">{{ $package['language'] }}</span> --}}
 			<p class="mb-0">
 				{{ $package['description'] }}
 			</p>
-			<p class="text-base font-semibold mt-2"><a target="_blank" href="{{ $package['repository'] }}">Check it out &rarr;</a></p>
+			<p class="text-base font-semibold mt-2"><a target="_blank" href="{{ $package['repository'] }}">Learn more &rarr;</a></p>
 		</div>
 		<div class="lg:w-1/5 w-full flex flex-no-wrap lg:flex-col">
 			{{-- Watchers --}}
@@ -26,16 +27,16 @@
 
 			{{-- Stars --}}
 			<div class="text-gray-500 text-center flex items-center lg:justify-start lg:flex-row-reverse lg:mr-0 mr-5">
-				<svg class="w-4 h-4 fill-current mx-2" aria-hidden="true" data-prefix="fas" data-icon="thumbs-up" class="svg-inline--fa fa-thumbs-up fa-w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-				  <path fill="currentColor" d="M104 224H24c-13.255 0-24 10.745-24 24v240c0 13.255 10.745 24 24 24h80c13.255 0 24-10.745 24-24V248c0-13.255-10.745-24-24-24zM64 472c-13.255 0-24-10.745-24-24s10.745-24 24-24 24 10.745 24 24-10.745 24-24 24zM384 81.452c0 42.416-25.97 66.208-33.277 94.548h101.723c33.397 0 59.397 27.746 59.553 58.098.084 17.938-7.546 37.249-19.439 49.197l-.11.11c9.836 23.337 8.237 56.037-9.308 79.469 8.681 25.895-.069 57.704-16.382 74.757 4.298 17.598 2.244 32.575-6.148 44.632C440.202 511.587 389.616 512 346.839 512l-2.845-.001c-48.287-.017-87.806-17.598-119.56-31.725-15.957-7.099-36.821-15.887-52.651-16.178-6.54-.12-11.783-5.457-11.783-11.998v-213.77c0-3.2 1.282-6.271 3.558-8.521 39.614-39.144 56.648-80.587 89.117-113.111 14.804-14.832 20.188-37.236 25.393-58.902C282.515 39.293 291.817 0 312 0c24 0 72 8 72 81.452z"/>
+				<svg class="w-4 h-4 fill-current mx-2" aria-hidden="true" data-prefix="fas" data-icon="star" class="svg-inline--fa fa-star fa-w-18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+				  <path fill="currentColor" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"/>
 				</svg>
 				<span class="text-xl font-semibold">{{ is_numeric($package['github_stars']) ? number_format($package['github_stars']) : '' }}</span>
 			</div>
 
 			{{-- Downloads --}}
 			<div class="text-gray-500 text-center flex items-center lg:justify-start lg:flex-row-reverse lg:mr-0 mr-5">
-				<svg class="w-4 h-4 fill-current mx-2" aria-hidden="true" data-prefix="fas" data-icon="comment" class="svg-inline--fa fa-comment fa-w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-				  <path fill="currentColor" d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32z"/>
+				<svg class="w-4 h-4 fill-current mx-2" aria-hidden="true" data-prefix="fas" data-icon="cloud-download-alt" class="svg-inline--fa fa-cloud-download-alt fa-w-20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+				  <path fill="currentColor" d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zm-132.9 88.7L299.3 420.7c-6.2 6.2-16.4 6.2-22.6 0L171.3 315.3c-10.1-10.1-2.9-27.3 11.3-27.3H248V176c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v112h65.4c14.2 0 21.4 17.2 11.3 27.3z"/>
 				</svg>
 				<span class="text-xl font-semibold">{{ is_numeric($package['downloads']['total']) ? number_format($package['downloads']['total']) : '' }}</span>
 			</div>

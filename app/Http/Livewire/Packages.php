@@ -27,6 +27,7 @@ class Packages extends Component
                 $response = Zttp::get("https://packagist.org/packages/{$packageName}.json");
                 $packages[] = $response->json()['package'];
             }
+            $packages = collect($packages)->sortByDesc('downloads.total')->toArray();
         } else {
             $packages = [];
         }
