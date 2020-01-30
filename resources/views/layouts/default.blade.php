@@ -6,6 +6,7 @@
 	<title>{{ $title ?? 'Mark Townsend' }}</title>
 	<link href="https://fonts.googleapis.com/css?family=Assistant:300,400,600,700,800&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 	@yield('css')
 </head>
 <body class="w-full h-full subpixel-antialiased bg-indigo-100 border-indigo-600 border-t-8 lg:p-20 md:p-18 p-16">

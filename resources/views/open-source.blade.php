@@ -9,11 +9,7 @@
 
 	<h2 class="text-2xl font-bold mb-5">Open source projects</h2>
 
-	<div wire:init="fetchPackages">
-		@foreach ($packages as $package)
-		@livewire('packages', $package)
-		@endforeach
-	</div>
+	@livewire('packages', $packages)
 @endsection
 
 @section('js')

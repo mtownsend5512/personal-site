@@ -7,12 +7,12 @@ use Zttp\Zttp;
 
 class Packages extends Component
 {
-    public $packageName;
+    public $packageNames;
     public $ready = false;
 
-    public function mount($package)
+    public function mount($packageNames)
     {
-        $this->packageName = $package;
+        $this->packageNames = $packageNames;
     }
 
     public function fetchPackages()
@@ -23,35 +23,16 @@ class Packages extends Component
     public function render()
     {
         if ($this->ready) {
-            $response = Zttp::get("https://packagist.org/packages/{$this->packageName}.json");
-            $package = $response->json()['package'];
+            foreach ($this->packageNames as $packageName) {
+                $response = Zttp::get("https://packagist.org/packages/{$packageName}.json");
+                $packages[] = $response->json()['package'];
+            }
         } else {
-        	$package = [
-        		'name' => '',
-        		'description' => '',
-        		'time' => '',
-        		'maintainers' => [],
-        		'versions' => [],
-        		'type' => '',
-        		'repository' => '',
-        		'github_stars' => '',
-        		'github_watchers' => '',
-        		'github_forks' => '',
-        		'github_open_issues' => '',
-        		'language' => '',
-        		'dependents' => '',
-        		'suggesters' => '',
-        		'downloads' => [
-        			'total' => '',
-        			'monthly' => '',
-        			'daily' => '',
-        		],
-        		'favers' => ''
-        	];
+            $packages = [];
         }
 
         return view('livewire.packages', [
-            'package' => $package
+            'packages' => $packages
         ]);
     }
 }
