@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 	@yield('css')
 </head>
-<body class="w-full h-full subpixel-antialiased bg-indigo-100 border-indigo-600 border-t-8 lg:p-20 md:p-18 p-16">
+<body class="w-full h-full subpixel-antialiased bg-indigo-100 border-indigo-600 border-t-8 lg:p-20 md:p-18 sm:p-16 p-6">
 	<header class="flex items-top mb-2 lg:mt-3">
 		 <a class="lg:mr-16 md:mr-12 mr-6 hover:opacity-75" href="/">
 			<img class="rounded-full shadow-lg hover:shadow-none inline-block w-24" src="{{ asset('img/mark-townsend.jpg') }}" alt="Mark Townsend" title="Mark Townsend">
