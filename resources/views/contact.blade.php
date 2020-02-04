@@ -15,7 +15,7 @@
 	<h2 class="text-2xl font-bold mb-5">Contact me</h2>
 
 	<div class="mb-6">
-		<form action="/contact" method="post" accept-charset="utf-8">
+		<form class="lg:w-4/5" action="/contact" method="post" accept-charset="utf-8">
 			{{ csrf_field() }}
 		  <div class="flex flex-wrap -mx-3 mb-6">
 		    <div class="w-full px-3 mb-4 md:mb-0">
