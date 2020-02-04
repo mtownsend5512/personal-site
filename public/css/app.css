@@ -683,6 +683,10 @@ nav.desktop-nav > a:not(:first-child) {
   margin-left: 1.5rem
 }
 
+nav#mobile_nav > a.active {
+  color: #4c51bf
+}
+
 p {
   margin-bottom: 1.5rem
 }
