@@ -78,7 +78,6 @@
 			body.classList.toggle('fixed');
 			body.classList.toggle('overflow-hidden');
 			document.getElementById('mobile_nav').classList.toggle('hidden');
-			document.querySelectorAll('#mobile_nav a').forEach(link => link.classList.toggle('mb-5'));
 		}
 	</script>
 </body>

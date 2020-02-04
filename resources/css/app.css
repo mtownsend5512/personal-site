@@ -45,6 +45,10 @@ nav.desktop-nav > a:not(:first-child) {
 	@apply ml-6
 }
 
+nav#mobile_nav > a {
+	@apply mb-5
+}
+
 nav#mobile_nav > a.active {
 	@apply text-indigo-700
 }
