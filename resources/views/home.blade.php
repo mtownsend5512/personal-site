@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="lg:w-3/5 md:w-5/6">
-
 	<h2 class="text-2xl font-bold mb-5"><span class="pr-2 text-3xl align-text-bottom leading-none">👋</span> Let's get to know each other; I'll start...</h2>
 	<p>
 		My name is Mark Townsend. I'm a <span class="font-semibold text-black">{{ now()->diffInYears(Carbon\Carbon::parse('July 1, 1989')) }}</span> year old full-stack developer/designer with <span class="font-semibold text-black">{{ now()->diffInYears(Carbon\Carbon::parse('Jan 1, 2004')) }}</span> years of experience in the industry. I've been a Texan all my life, and Houston, Texas is where I call home. My kryptonite is tacos &mdash; really, any Mexican food. My hobbies include camping & hiking, tinkering with new development and design projects and PC gaming.

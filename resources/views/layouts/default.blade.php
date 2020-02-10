@@ -80,5 +80,17 @@
 			document.getElementById('mobile_nav').classList.toggle('hidden');
 		}
 	</script>
+	<script type="text/javascript">
+	var sc_project=12196374;
+	var sc_invisible=1;
+	var sc_security="d315932f";
+	var sc_https=1;
+	var sc_remove_link=1;
+	</script>
+	<script type="text/javascript"
+	src="https://www.statcounter.com/counter/counter.js" async></script>
+	<noscript><div class="statcounter"><img class="statcounter"
+	src="https://c.statcounter.com/12196374/0/d315932f/1/" alt="site
+	stats"></div></noscript>
 </body>
 </html>
