@@ -1,4 +1,5 @@
 <div wire:init="fetchPackages">
+	{{-- Loading indicator --}}
 	<div class="flex w-full items-center relative" wire:loading>
         <div class="text-center text-indigo-500">
 			<svg class="fill-current w-10 h-10 inline-block spin z-30" aria-hidden="true" data-prefix="far" data-icon="spinner-third" class="svg-inline--fa fa-spinner-third fa-w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -6,6 +7,29 @@
 			</svg>
         </div>
     </div>
+    @if ($packages)
+    <div class="flex justify-around w-full mb-12">
+		<div class="text-center">
+			<span class="block uppercase text-indigo-500 text-sm font-bold leading-none">Packages</span>
+		    <span class="block leading-none text-3xl lg:text-5xl font-bold text-gray-800 tracking-tight">
+		    	{{ number_format(count($packages), 0) }}
+		    </span>
+		</div>
+		<div class="text-center">
+			<span class="block uppercase text-indigo-500 text-sm font-bold leading-none">Downloads</span>
+		    <span class="block leading-none text-3xl lg:text-5xl font-bold text-gray-800 tracking-tight">
+		    	{{ number_format(collect($packages)->sum('downloads.total'), 0) }}
+		    </span>
+		</div>
+		<div class="text-center">
+			<span class="block uppercase text-indigo-500 text-sm font-bold leading-none">Stars</span>
+		    <span class="block leading-none text-3xl lg:text-5xl font-bold text-gray-800 tracking-tight">
+		    	{{ number_format(collect($packages)->sum('github_stars'), 0) }}
+		    </span>
+		</div>
+    </div>
+    @endif
+    {{-- End loading indicator --}}
 	@foreach ($packages as $package)
 	<div class="flex flex-wrap mb-8">
 		<div class="lg:w-4/5">
