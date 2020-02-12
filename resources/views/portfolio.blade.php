@@ -42,7 +42,7 @@
 			<span class="block font-bold pl-4 text-2xl">H-E-B barcode scanner web app</span>
 		</div>
 		<p>
-			I built this web app solely to solve first-world problems for my wife. She loves knowing the total before checkout because she's a frugal shopper, but ordering online causes you to miss out on so many recipe ideas.
+			I built this web app solely to solve first-world grocery shopping problems for my wife. She loves knowing the total before checkout because she's a frugal shopper, but ordering online causes you to miss out on so many recipe ideas.
 		</p>
 		<p>
 			I was able to access H-E-B's private API to retrieve product data. This app mostly uses vanilla Javascript, but sprinkles in a tiny bit of PHP for the API calls to overcome CORs issues.
