@@ -10,7 +10,7 @@
 			<div class="bg-black p-3 rounded-lg inline-block shadow border border-black relative">
 				<img class="block w-10 h-10" src="{{ asset('img/dh-logo.svg') }}" alt="Dying Horizon" title="Dying Horizon">
 			</div>
-			<span class="block font-bold pl-4 text-2xl">Dying Horizon</span>
+			<span class="block font-bold pl-4 text-2xl leading-none">Dying Horizon</span>
 		</div>
 		<p>
 			Dying Horizon is a free apocalypse role-playing browser game that throws you into a bleak and unforgiving alternate reality. Experience a multiplayer turn-based image and text game of survival and conquest.
@@ -39,7 +39,7 @@
 					</svg>
 				</div>
 			</div>
-			<span class="block font-bold pl-4 text-2xl">H-E-B barcode scanner web app</span>
+			<span class="block font-bold pl-4 text-2xl leading-none">H-E-B barcode scanner web app</span>
 		</div>
 		<p>
 			I built this web app solely to solve first-world grocery shopping problems for my wife. She loves knowing the total before checkout because she's a frugal shopper, but ordering online causes you to miss out on so many recipe ideas.
@@ -65,7 +65,7 @@
 			<div class="bg-green-200 p-3 rounded-lg inline-block shadow border border-green-400 relative">
 				<img class="block w-10 h-10" src="{{ asset('img/rc-church.png') }}" alt="">
 			</div>
-			<span class="block font-bold pl-4 text-2xl">Rabon Chapel Church of Christ</span>
+			<span class="block font-bold pl-4 text-2xl leading-none">Rabon Chapel Church of Christ</span>
 		</div>
 		<p>
 			When I went to work designing and creating the Rabon Chapel Church of Christ site the goal was minimalism with a strong emphasis on a clean mobile experience. Traditional contact methods are reduced in favor of a more modern live chat approach of communication.
