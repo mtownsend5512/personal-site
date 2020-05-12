@@ -20,7 +20,9 @@ class WritingController extends Controller
 
         abort_unless($response->isOk(), 500);
 
-        $articles = data_wrapper($response->json());
+        $articles = data_wrapper($response->json())->toCollection()->reject(function ($article) {
+            return !$article->published;
+        });
 
         return view('writing', compact('articles'));
     }
