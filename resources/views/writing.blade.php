@@ -12,7 +12,12 @@
 	@if ($article->published)
 	<div class="flex flex-wrap mb-6">
 		<div class="lg:w-4/5">
-			<a target="_blank" href="{{ $article->url }}" class="font-bold">{{ $article->title }}</a>
+			<div class="inline-flex flex-no-wrap items-center">
+				<a target="_blank" href="{{ $article->url }}" class="font-bold">{{ $article->title }}</a>
+				@if (Carbon::parse($article->published_timestamp)->diffInDays(now()) < 30)
+				<span class="bg-green-500 text-white px-3 text-xs rounded-full font-bold ml-2 tracking-wide">NEW</span>
+				@endif
+			</div>
 			@if (!empty($article->tag_list))
 			<div>
 				@foreach ($article->tag_list as $tag)
