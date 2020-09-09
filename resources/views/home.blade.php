@@ -10,6 +10,9 @@
 		My passion for development started at the age of 14 when my father sat me down, handed me a cd <em class="text-gray-600 font-semibold text-base tracking-tight">(remember those?!)</em> on web development and told me I was responsible for making our church's web site. Little did I know, that task was the seed which grew into a career I love.
 	</p>
 	<p>
+		 I believe a job is only half done if it only looks and functions well for the end user. That's why I'm passionate about writing clean, readable, quality code on everything I work on. I've had experience working with Javascript, PHP, Laravel, jQuery, Vue, Bootstrap, Foundation, Tailwind and much more. I've been a web developer in the non-profit, eCommerce (Woocommerce, Magento, Shopify) and worked on content management platforms including Wordpress, Grav, and Concrete5.
+	</p>
+	<p>
 		These days, I hang around with the totally awesome crew at <a target="_blank" href="https://dieselcore.com?ref=mtownsend_portfolio">DieselCore</a> working as the Web Department Manager and lead developer for their API-driven ecosystem.
 	</p>
 	<p class="font-semibold">
