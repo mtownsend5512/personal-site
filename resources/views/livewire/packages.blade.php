@@ -41,12 +41,12 @@
 			<p class="text-base font-semibold mt-2"><a target="_blank" href="{{ $package['repository'] }}">Learn more &rarr;</a></p>
 		</div>
 		<div class="lg:w-1/5 w-full flex flex-no-wrap lg:flex-col">
-			{{-- Watchers --}}
+			{{-- Downloads --}}
 			<div class="text-gray-500 text-center flex items-center lg:justify-start lg:flex-row-reverse lg:mr-0 mr-5">
-				<svg class="w-4 h-4 fill-current mx-2" aria-hidden="true" data-prefix="fas" data-icon="eye" class="svg-inline--fa fa-eye fa-w-18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-				  <path fill="currentColor" d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 000 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 000-29.19zM288 400a144 144 0 11144-144 143.93 143.93 0 01-144 144zm0-240a95.31 95.31 0 00-25.31 3.79 47.85 47.85 0 01-66.9 66.9A95.78 95.78 0 10288 160z"/>
+				<svg class="w-4 h-4 fill-current mx-2" aria-hidden="true" data-prefix="fas" data-icon="cloud-download-alt" class="svg-inline--fa fa-cloud-download-alt fa-w-20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+				  <path fill="currentColor" d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zm-132.9 88.7L299.3 420.7c-6.2 6.2-16.4 6.2-22.6 0L171.3 315.3c-10.1-10.1-2.9-27.3 11.3-27.3H248V176c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v112h65.4c14.2 0 21.4 17.2 11.3 27.3z"/>
 				</svg>
-				<span class="text-xl font-semibold">{{ is_numeric($package['github_watchers']) ? number_format($package['github_watchers']) : '' }}</span>
+				<span class="text-xl font-semibold">{{ is_numeric($package['downloads']['total']) ? number_format($package['downloads']['total']) : '' }}</span>
 			</div>
 
 			{{-- Stars --}}
@@ -57,12 +57,12 @@
 				<span class="text-xl font-semibold">{{ is_numeric($package['github_stars']) ? number_format($package['github_stars']) : '' }}</span>
 			</div>
 
-			{{-- Downloads --}}
+			{{-- Watchers --}}
 			<div class="text-gray-500 text-center flex items-center lg:justify-start lg:flex-row-reverse lg:mr-0 mr-5">
-				<svg class="w-4 h-4 fill-current mx-2" aria-hidden="true" data-prefix="fas" data-icon="cloud-download-alt" class="svg-inline--fa fa-cloud-download-alt fa-w-20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-				  <path fill="currentColor" d="M537.6 226.6c4.1-10.7 6.4-22.4 6.4-34.6 0-53-43-96-96-96-19.7 0-38.1 6-53.3 16.2C367 64.2 315.3 32 256 32c-88.4 0-160 71.6-160 160 0 2.7.1 5.4.2 8.1C40.2 219.8 0 273.2 0 336c0 79.5 64.5 144 144 144h368c70.7 0 128-57.3 128-128 0-61.9-44-113.6-102.4-125.4zm-132.9 88.7L299.3 420.7c-6.2 6.2-16.4 6.2-22.6 0L171.3 315.3c-10.1-10.1-2.9-27.3 11.3-27.3H248V176c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16v112h65.4c14.2 0 21.4 17.2 11.3 27.3z"/>
+				<svg class="w-4 h-4 fill-current mx-2" aria-hidden="true" data-prefix="fas" data-icon="eye" class="svg-inline--fa fa-eye fa-w-18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+				  <path fill="currentColor" d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 000 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 000-29.19zM288 400a144 144 0 11144-144 143.93 143.93 0 01-144 144zm0-240a95.31 95.31 0 00-25.31 3.79 47.85 47.85 0 01-66.9 66.9A95.78 95.78 0 10288 160z"/>
 				</svg>
-				<span class="text-xl font-semibold">{{ is_numeric($package['downloads']['total']) ? number_format($package['downloads']['total']) : '' }}</span>
+				<span class="text-xl font-semibold">{{ is_numeric($package['github_watchers']) ? number_format($package['github_watchers']) : '' }}</span>
 			</div>
 		</div>
 	</div>
