@@ -8,7 +8,6 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=1">
 	<link rel="manifest" href="/site.webmanifest">
 	<title>{{ $title ?? 'Mark Townsend' }}</title>
-	<link href="https://fonts.googleapis.com/css?family=Assistant:300,400,600,700,800&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 	@yield('css')
