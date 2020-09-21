@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="lg:w-3/5 md:w-5/6">
-	<h2 class="text-2xl font-bold mb-5"><span class="pr-2 text-3xl align-text-bottom leading-none">👋</span> Let's get to know each other. I'll start...</h2>
+	<h2 class="text-2xl font-bold mb-5"><span class="pr-2 text-3xl align-text-bottom leading-none">👋</span> Hey there! Let's get to know each other. I'll start...</h2>
 	<p>
 		My name is Mark Townsend. I'm a <span class="font-semibold text-black">{{ now()->diffInYears(Carbon\Carbon::parse('July 1, 1989')) }}</span> year old full-stack developer/designer with <span class="font-semibold text-black">{{ now()->diffInYears(Carbon\Carbon::parse('Jan 1, 2004')) }}</span> years of experience in the industry. I've been a Texan all my life, and Houston, Texas is where I call home. My kryptonite is tacos &mdash; really, any Mexican food. When I'm not creating you can find me playing Switch with my kids, camping, hiking, tinkering with new development projects and PC gaming.
 	</p>
@@ -10,7 +10,7 @@
 		My passion for development started at the age of 14 when my father sat me down, handed me a cd <em class="text-gray-600 font-semibold text-base tracking-tight">(remember those?!)</em> on web development and told me I was responsible for making our church's web site. Little did I know, that task was the seed which grew into a career I love.
 	</p>
 	<p>
-		 I believe a job is only half done if it only looks and functions well for the end user. That's why I'm passionate about writing clean, readable, quality code on everything I work on. I've had experience working with Javascript, PHP, Laravel, jQuery, Vue, Bootstrap, Foundation, Tailwind and much more. I've been a web developer in the non-profit, eCommerce (Woocommerce, Magento, Shopify) and worked on content management platforms including Wordpress, Grav, and Concrete5.
+		 I believe a job is only half done if it only looks and functions well for the end user. I'm passionate about writing clean, readable, quality code to give myself the peace of mind that the job was done right. I've had experience working with languages and frameworks like Javascript, PHP, Laravel, jQuery, Vue, Bootstrap, Foundation, Tailwind and much more. My web-based tooling and experiencing is equally as diverse. Much of my time in the industry has been spent in eCommerce (Woocommerce, Magento, Shopify) utilizing content management platforms including Wordpress, Grav, and Concrete5 and more.
 	</p>
 	<p>
 		These days, I hang around with the totally awesome crew at <a target="_blank" href="https://dieselcore.com?ref=mtownsend_portfolio">DieselCore</a> working as the Web Department Manager and lead developer for their API-driven ecosystem.
