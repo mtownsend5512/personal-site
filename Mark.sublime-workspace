@@ -339,7 +339,7 @@
 			"file": "app/Http/Controllers/ContactController.php",
 			"settings":
 			{
-				"buffer_size": 1469,
+				"buffer_size": 1016,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -773,15 +773,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1469,
+						"buffer_size": 1016,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								637,
-								637
+								810,
+								810
 							]
 						],
 						"settings":
@@ -802,8 +802,8 @@
 								{
 									"1":
 									[
-										1465,
-										1466
+										1012,
+										1013
 									]
 								},
 								"icon":
@@ -818,8 +818,8 @@
 								{
 									"1":
 									[
-										336,
-										337
+										351,
+										352
 									]
 								},
 								"unmatched":
